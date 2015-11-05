@@ -1,0 +1,10 @@
+---
+- hosts: all
+  user: feiyu.liu 
+  sudo: yes
+  vars:
+      user: test1 
+  tasks:
+      - name: add user
+        user: name={{user}} shell=/bin/bash home=/home/{{user}} createhome=yes password=$1$hsdfrew$nFEPwDMqNziavMghgPFbk/
+
