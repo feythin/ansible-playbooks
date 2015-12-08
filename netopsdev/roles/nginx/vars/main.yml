@@ -1,0 +1,2 @@
+nginx_user: www
+nginx_workers: 2

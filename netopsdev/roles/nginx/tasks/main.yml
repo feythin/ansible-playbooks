@@ -1,0 +1,8 @@
+- name: Install nginx rpm
+  yum: name=nginx state=latest  
+  tags: [nginx]
+
+- name: Setting Nginx default configuration file
+  template: src=nginx.conf.j2 dest=/usr/local/nginx/conf/nginx.conf
+  notify: restart nginx
+  tags: [nginx]
