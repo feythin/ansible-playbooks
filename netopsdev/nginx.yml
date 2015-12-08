@@ -1,0 +1,5 @@
+- name: nginx
+  hosts: '{{ target}}'
+  roles:
+    - {role: nginx, tags: role_nginx}
+- include: base.yml
