@@ -1,0 +1,36 @@
+- name: Install marathon
+  yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  tags: [marathon]
+
+- name: Make config direcotory
+  file: path=/etc/marathon/conf state=directory mode=755
+  tags: [marathon]
+
+- name: touch zk file
+  file: path=/etc/marathon/conf/zk state=present
+  tags: [marathon]
+
+- name: add event_subscriber
+  shell: echo {{ event_subscriber }} > /etc/marathon/conf/event_subscriber
+  tags: [marathon]
+
+- name: add http_endpoints
+  shell: echo {{ http_endpoints  }} /etc/marathon/conf/http_endpoints
+  tags: [marathon]
+
+- name: add mesos zk 
+  template: src=mesoszk.j2 dest=/etc/marathon/conf/master
+  tags: [marathon]
+
+- name: add marathon zk
+  template: src=marathonzk.j2 dest=/etc/marathon/conf/zk
+  tags: [marathon]
+
+- name: add http_credentials
+  shell: echo {{ http_credentials }} > /etc/marathon/conf/http_credentials
+  tags: [marathon]
+
+- name: add https_port
+  shell: echo {{ https_port }} > /etc/marathon/conf/https_port
+  tags: [marathon]
+

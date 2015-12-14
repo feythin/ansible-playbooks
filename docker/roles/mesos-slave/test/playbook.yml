@@ -1,0 +1,6 @@
+- name: install mesos slave on all slave hosts
+  hosts: mesosslave
+  remote_user: feiyu.liu
+  sudo: yes
+  roles:
+    - role: mesos-slave

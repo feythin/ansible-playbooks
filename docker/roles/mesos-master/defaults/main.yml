@@ -1,0 +1,6 @@
+---
+mesos_master_playbook_version: "0.0.1"
+version: 0.25
+cluster: mesoscluster
+quorum: 2
+work_dir: /var/lib/mesos

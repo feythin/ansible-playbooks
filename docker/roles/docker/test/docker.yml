@@ -1,0 +1,6 @@
+- name : Install docker on all hosts
+  hosts: docker
+  remote_user: feiyu.liu
+  sudo: yes
+  roles:
+    - role: docker

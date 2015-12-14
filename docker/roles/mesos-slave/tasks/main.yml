@@ -1,0 +1,64 @@
+- name: Install mesos-repo
+  yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  tags: [mesos-slave]
+
+- name: Install mesos
+  yum: name=mesos state=present
+  tags: [mesos-slave]
+
+- name: Enable mesos-slave
+  service: name=mesos-slave enabled=yes
+  tags: [mesos-slave]
+
+- name: Disable mesos-master
+  service: name=mesos-master enabled=no
+  tags: [mesos-slave]
+
+- name: Touch zk File
+  file: path=/etc/mesos/zk state=touch
+  tags: [mesos-slave]
+
+- name: Touch containerizers File
+  file: path=/etc/mesos-slave/containerizers state=touch
+  tags: [mesos-slave]
+
+- name: Touch hostname File
+  file: path=/etc/mesos-slave/hostname state=touch
+  tags: [mesos-slave]
+
+- name: Touch ip File
+  file: path=/etc/mesos-slave/ip state=touch
+  tags: [mesos-slave]
+
+- name: Create attributes directory
+  file: path=/etc/mesos-slave/attributes state=directory mode=755
+  tags: [mesos-slave]
+
+- name: Touch host File
+  file: path=/etc/mesos-slave/attributes/{{ item.file}} state=touch 
+  with_items:
+    - {file: 'host'}
+    - {file: 'rack'}
+  tags: [mesos-slave]
+
+- name: Configure mesos-slave zk
+  template: src=mesoszk.j2 dest=/etc/mesos/zk 
+  tags: [mesos-slave]
+
+- name: Confiure mesos-slave hostname ip 
+  shell: "echo {{ inventory_hostname }} > /etc/mesos-slave/hostname && echo {{ inventory_hostname }}>/etc/mesos-slave/ip"
+  tags: [mesos-slave]
+
+- name: Configure mesos-slave containerizers
+  shell: "echo {{ containerizers }} > /etc/mesos-slave/containerizers"
+  tags: [mesos-slave]
+
+- name: Configure mesos-slave attribute host
+  template: src=attrhost.j2 dest=/etc/mesos-slave/attributes/host
+  tags: [mesos-slave]
+
+- name: Configure mesos-slave attribute rack
+  template: src=attrrack.j2 dest=/etc/mesos-slave/attributes/rack
+  notify: restart mesos-slave
+  tags: [mesos-slave]
+

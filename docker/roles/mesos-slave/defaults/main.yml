@@ -1,0 +1,4 @@
+---
+mesos_slave_playbook_version: "0.0.1"
+version: 0.25
+containerizers: docker,mesos

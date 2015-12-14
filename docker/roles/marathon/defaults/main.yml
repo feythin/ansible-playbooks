@@ -1,0 +1,5 @@
+--- 
+event_subscriber: http_callback
+http_endpoints: http://10.8.120.20:8000/api/services
+http_credentials: username:password
+https_port: 8443

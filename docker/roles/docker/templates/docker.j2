@@ -1,0 +1,7 @@
+# /etc/sysconfig/docker
+
+# Modify these options if you want to change the way the docker daemon runs
+OPTIONS='--tlsverify -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock --tlscacert=/etc/.docker/ca.pem --tlscert=/etc/.docker/cert.pem --tlskey=/etc/.docker/key.pem --storage-opt dm.basesize=15G --storage-opt dm.blkdiscard=false --storage-opt dm.mountopt=nodiscard'
+#OPTIONS='--tlsverify -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock --tlscacert=/etc/.docker/ca.pem --tlscert=/etc/.docker/cert.pem --tlskey=/etc/.docker/key.pem --storage-opt dm.datadev=/dev/docker/data --storage-opt dm.metadatadev=/dev/docker/metadata --storage-opt dm.basesize=15G --storage-opt dm.blkdiscard=false --storage-opt dm.mountopt=nodiscard'
+
+DOCKER_CERT_PATH=/etc/docker

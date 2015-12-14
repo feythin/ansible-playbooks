@@ -1,0 +1,57 @@
+- name: Install mesos-repo
+  yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  tags: [mesos-master]
+
+- name: Install mesos
+  yum: name=mesos state=present
+  tags: [mesos-master]
+
+- name: Enable mesos-master
+  service: name=mesos-master enabled=yes
+  tags: [mesos-master]
+
+- name: Disable mesos-slave
+  service: name=mesos-slave enabled=no
+  tags: [mesos-master]
+
+- name: Touch zk File
+  file: path=/etc/mesos/zk state=touch
+  tags: [mesos-master]
+
+- name: Touch hostname File
+  file: path=/etc/mesos-master/hostname state=touch
+  tags: [mesos-master]
+
+- name: Touch ip File
+  file: path=/etc/mesos-master/ip state=touch
+  tags: [mesos-master]
+
+- name: Touch cluster File
+  file: path=/etc/mesos-master/cluster state=touch
+  tags: [mesos-master]
+
+- name: Touch quorum File
+  file: path=/etc/mesos-master/quorum state=touch
+  tags: [mesos-master]
+
+- name: Touch work_dir File
+  file: path=/etc/mesos-master/work_dir state=touch
+  tags: [mesos-master]
+
+- name: Configure mesos-master zk
+  template: src=mesoszk.j2 dest=/etc/mesos/zk 
+  tags: [mesos-master]
+
+- name: Confiure mesos-master hostname ip 
+  shell: "echo {{ inventory_hostname }} > /etc/mesos-master/hostname && echo {{ inventory_hostname }}>/etc/mesos-master/ip"
+  tags: [mesos-master]
+
+- name: Configure mesos-master cluster
+  shell: "echo {{ cluster }} > /etc/mesos-master/cluster"
+  tags: [mesos-master]
+
+- name: Configure mesos-master quorum workdir
+  shell: "echo {{ quorum }} > /etc/mesos-master/quorum && echo {{ work_dir }} > /etc/mesos-master/work_dir"
+  notify: restart mesos-master
+  tags: [mesos-master]
+

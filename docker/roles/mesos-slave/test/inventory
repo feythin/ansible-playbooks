@@ -1,0 +1,6 @@
+[mesosmaster]
+10.8.210.81 myid=1
+10.9.210.91 myid=2
+[mesosslave]
+10.9.210.91 attrhost=slave-1 attrrack=rack-1
+10.8.210.81 attrhost=slave-2 attrrack=rack-2

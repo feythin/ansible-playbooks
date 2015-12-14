@@ -1,0 +1,26 @@
+- name: Install mesos-zookeeper-repo
+  yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  tags: [mesos-zookeeper]
+
+- name: Install mesos-zookeeper
+  yum: name=mesosphere-zookeeper state=present
+  tags: [mesos-zookeeper]
+
+- debug: msg="{{ hostvars[groups['mesosmaster'][0]] }}"
+
+- name: Myid file
+  template: src=myid.j2 dest=/var/lib/zookeeper/myid
+  tags: [mesos-zookeeper]
+
+- name: zoo.cfg file
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  notify: restart zookeeper
+  tags: [mesos-zookeeper]
+
+- name: mkdir log directory
+  file: path={{log_dir}} state=directory recurse=yes owner=root group=root
+  tags: [mesos-zookeeper]
+
+- name: start zookeeper
+  service: name=zookeeper state=started enabled=yes
+  tags: [mesos-zookeeper] 

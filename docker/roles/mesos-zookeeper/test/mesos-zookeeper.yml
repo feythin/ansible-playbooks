@@ -1,0 +1,6 @@
+- name: install zk
+  hosts: mesosmaster
+  remote_user: feiyu.liu
+  sudo: yes
+  roles:
+    - role: mesos-zookeeper 

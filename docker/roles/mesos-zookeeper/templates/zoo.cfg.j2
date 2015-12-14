@@ -1,0 +1,10 @@
+tickTime={{tick_time}}
+dataDir={{data_dir}}
+dataLogDir={{log_dir}}
+clientPort={{client_port}}
+initLimit={{init_limit}}
+syncLimit={{sync_limit}}
+
+{% for host in groups['mesosmaster'] %}
+server.{{ hostvars[host].myid }}={{ hostvars[host].inventory_hostname}}:2888:3888
+{% endfor %}

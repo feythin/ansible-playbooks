@@ -1,0 +1,31 @@
+- name: Copy ssl keygen script
+  copy: src=certgen.rb dest=/tmp/certgen.rb
+  tags: [docker]
+
+- name: Install gem ssl
+  yum: name=rubygems state=present
+  tags: [docker]
+
+#- debug: msg="{{ hostvars[groups['docker']] }}"
+#- debug: msg="{{ inventory_hostname }}"
+
+- name: kengen cert
+  shell: "gem sources --remove https://rubygems.org/ && gem sources -a https://ruby.taobao.org/ && gem install certificate_authority && ruby /tmp/certgen.rb {{ inventory_hostname }}"
+  tags: [docker]
+
+- name: mkdir .docker directory
+  file: path=/etc/.docker state=directory 
+  tags: [docker]
+
+- name: mv cert to etc directory
+  shell: mv /root/.docker/{{ inventory_hostname }}/* /etc/.docker 
+  tags: [docker]
+
+- name: Install Docker
+  yum: name=docker-1.7.1-115.el7.x86_64 state=present
+  tags: [docker]
+
+- name: Setting Docker config
+  template: src=docker.j2 dest=/etc/sysconfig/docker
+  notify: restart docker
+  tags: [docker]
